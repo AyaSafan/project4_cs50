@@ -1,0 +1,165 @@
+{% extends "LastFriend_templates/layout_nav.html" %}
+
+{% block title %}Messages{% endblock %}
+{% block link_script %}
+<script src="{{ url_for('static', filename='LastFriend_static/message.js') }}"></script>
+{% endblock %}
+
+{% block body %}
+<div class="background2">
+    <div class="container-fluid"> 
+        <div class="row ">
+            <div class="col-lg-8 col-md-10 col-sm-10 col-11 col-messages col-friends">
+                <div class="tab">
+                    <div>
+                        <!-- Nav tabs -->
+                        <ul class="nav nav-tabs justify-content-center">
+                            <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#home">My friends</a>
+                            </li>
+                            <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" href="#menu1">Messages</a>
+                            </li>
+                           
+                        </ul>
+                        
+                        <!-- Tab panes -->
+                        <div class="tab-content">
+                            <div class="tab-pane container fade" id="home"> <br>
+                                <div class="tab-friends">
+
+                                {% if Friends|length == 0 %}
+                                    <div class="not-found">
+                                        <p>No Friends Found</p>
+                                    </div>
+                                {%endif%}
+                                {% for Friend in Friends %}
+                                {% if Friend.reciever.username == session_username %}
+                                <a href="#" class= "friend-msg" data-username="{{Friend.sender.username}}" data-toggle="tooltip" data-placement="bottom" title="{{Friend.sender.name}}">
+                                    <div class="container-fluid friend">
+                                        <div class="row row-profile-add">
+                                            <div class="col-3"> 
+                                                <img class="rounded-circle img-fluid friend-img" src="data:image/jpeg;base64,{{ Friend.sender.img }}" onerror="this.src =`{{ url_for('static', filename='LastFriend_static/alt.png')}}`">
+                                           
+                                            </div>
+                                            <div class="col col-friend-label">
+                                                <label class="friend-label">{{Friend.sender.name}}</label>
+                                                <div class="username-gray">@{{ Friend.sender.username }}</div>               
+
+                                                <div id = "{{Friend.sender.username}}" class="cut-text">{% if Friend.last_msg != None %}{{ Friend.last_msg }}{% endif %}</div>
+
+                                            </div>
+                                            {%if Friend.unseen_username == Friend.sender.username %}
+                                            <div class="col-2" style="padding: 0%;">
+                                                <div id = "{{Friend.sender.username}}counter" class="numberCircle">{{Friend.unseen}}</div>
+                                            </div>
+                                            {%else%}
+                                            <div class="col-2" style="padding: 0%;">
+                                                <div id = "{{Friend.sender.username}}counter" class="numberCircle">0</div>
+                                            </div>
+                                            {%endif%}
+                                            
+                                        </div>
+                                    </div>
+                                </a>
+                                                               
+                                {%else%}
+                                <a href="#"  class= "friend-msg" data-username="{{Friend.reciever.username}}" data-toggle="tooltip" data-placement="bottom" title="{{Friend.reciever.username}}">
+                                <div class="container-fluid friend">
+                                    <div class="row row-profile-add">
+                                        <div class="col-3"> 
+                                            <img class="rounded-circle img-fluid friend-img" src="data:image/jpeg;base64,{{ Friend.reciever.img }}" onerror="this.src =`{{ url_for('static', filename='LastFriend_static/alt.png')}}`">
+                                        </div>
+                                        <div class="col col-friend-label">
+                                            <label class="friend-label"> {{Friend.reciever.name}}</label>
+                                            <div class="username-gray">@{{ Friend.reciever.username }}</div>               
+
+                                            <div id = "{{Friend.reciever.username}}" class="cut-text">{% if Friend.last_msg != None %}{{ Friend.last_msg }}{% endif %}</div>
+                                        </div>
+                                        {%if Friend.unseen_username == Friend.reciever.username %}
+                                        <div class="col-2" style="padding: 0%;">
+                                            <div id = "{{Friend.reciever.username}}counter" class="numberCircle">{{Friend.unseen}}</div>
+                                        </div>
+                                        {%else%}
+                                        <div class="col-2" style="padding: 0%;">
+                                            <div id = "{{Friend.reciever.username}}counter" class="numberCircle">0</div>
+                                        </div>
+                                        {%endif%}
+                                       
+                                    </div>
+                                </div>
+                                </a>
+                                {%endif%}
+                             {%endfor%}   
+                                </div>
+                                
+                            </div>
+                            <div class="tab-pane  active" id="menu1">                                
+                                <div class="chat">
+                                                <div id = "last_msg_username" class="card-header chat-user-header">{% if last_msg_username != None %}{{ last_msg_username }}{% endif %}</div>
+                                                
+                                                <div class="inner_feed">
+                            
+                                                <div class="wrapper"> 
+                                                <div class="messages" >
+                                                <div id="feed"> 
+                                                    {% if Messages|length == 0 %}
+                                                    <div class="not-found">
+                                                        <p>No Messages Found</p>
+                                                    </div>
+                                                    {%endif%}
+                            
+                                                    {% for Message in Messages %}
+                                                    {% if Message.from_username == session_username %}
+                            
+                                                    <div id= {{Message.id}} class="container-fluid message me ">
+                                                        <button data-id= {{Message.id}} class="hide">x</button>        
+                                                      <p>{{Message.msg}}</p>
+                                                      <span class="time-right">{{Message.date}}</span>
+                                                    </div>
+                                                    {%else%}                                                    
+                                                    <div id= {{Message.id}} class="container-fluid message other ">         
+                                                        <p>{{Message.msg}}</p>
+                                                        <span class="time-left">{{Message.date}}</span>
+                                                    </div>
+                                                    {%endif%}
+                                                    {%endfor%}
+                                                   
+                                                        
+                                                </div>
+                                                </div>
+                                                </div>
+                                                        
+                                                <div id="form_msg">
+                                                    <form id= "new_msg">
+                                                        <div class="input-group mb-3"> 
+                                                            <textarea id="txtarea" class="md-textarea form-control txtarea message-box" placeholder="Type a message ..." rows="2" name="txtarea"></textarea> 
+                                                            <div class="input-group-prepend">
+                                                            <button type="submit" id="submit" class="btn btn-send message"><i class="fas fa-angle-double-right fa-add fa-arrow"></i></button>
+                                                          </div>                            
+                                                        </div>
+                                                    </form>                                                      
+                                                </div>
+                                            </div>
+                                </div>                                 
+                            </div>
+                        </div>                      
+           
+                </div>
+                </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block script %}
+<script>
+    $(document).ready(function(){
+      $('[data-toggle="tooltip"]').tooltip();   
+    });
+</script>
+{% endblock %}

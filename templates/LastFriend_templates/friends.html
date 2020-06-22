@@ -1,0 +1,218 @@
+{% extends "LastFriend_templates/layout_nav.html" %}
+
+{% block title %}Friends{% endblock %}
+
+{% block body %}
+<div class="background2">
+    <div class="container-fluid"> 
+        <div class="row ">
+            <div class="col-lg-8 col-md-10 col-sm-10 col-11 col-messages col-friends">
+                <div class="messages-friends">
+                    <div>
+                        <!-- Nav tabs -->
+                        <ul class="nav nav-tabs justify-content-center">
+                            <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" href="#home">Search</a>
+                            </li>
+                            <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#menu1">Friend Requests</a>
+                            </li>
+                            <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#menu2">My Friends</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#menu3">Blocked Users</a>
+                                </li>
+                        </ul>
+                        
+                        <!-- Tab panes -->
+                        <div class="tab-content">
+                            <div class="tab-pane container active" id="home"> <br>
+                                <form id="postform" action="{{ url_for('friends') }}" method="post">                
+                                    
+                                    <div class= "container-fluid">
+                                        <div class="row  row-profile-add">
+                                            <div class="col">
+                                            <div class="form-group">
+                                                <input class="form-control" placeholder="Search for a friend ..." id="title" name="name">
+                                            </div>
+                                        </div>
+                                        </div>
+                                        <div class="row  row-profile-add">
+                                            <div class="col">
+                                                <label >Gender</label>
+                                                <select name="gender" class="custom-select">
+                                                <option selected value=""></option>
+                                                <option  value="__">__</option>
+                                                <option value="Male">Male</option>
+                                                <option value="Female">Female</option>
+                                                <option value="Other">Other</option>
+                                                </select>
+                                        </div>
+                                            <div class="col">
+                                                    <label for="min_age" >Min.Age</label>
+                                                    <input class="form-control" type="number" id="min_age" name="min_age" min="3" >
+                                            </div>
+                                            <div class="col">
+                                                    <label for="max_age" >Max.Age</label>
+                                                    <input class="form-control" type="number" id="max_age" name="max_age" min="3">
+                                            </div>
+                                            <div class="col-2 ">
+                                                <button type="submit" class="btn btn-send btn-search"><i class="fas fa-angle-double-right fa-add"></i></button>          
+                                            </div>
+                                            
+                                    </div>
+                                    </div>
+                                    
+                                   
+                                </form> 
+                                <hr>
+                                <div id="my-results">                    
+                                    {% if Results|length ==0 %}
+                                    <div class="not-found">
+                                        <p>No Results Found</p>
+                                    </div>
+                                    {%endif%}
+                                    {% for Result in Results %}
+                                    <a href="{{ url_for('profile_user', username=Result.username) }}"  data-toggle="tooltip" data-placement="bottom" title="{{Result.name}}">
+                                        <div class="container-fluid friend">
+                                            <div class="row row-profile-add">
+                                                <div class="col-3"> 
+                                                    <img class="rounded-circle img-fluid friend-img" src="data:image/jpeg;base64,{{ Result.img }}" onerror="this.src =`{{ url_for('static', filename='LastFriend_static/alt.png')}}`">
+                                               
+                                                </div>
+                                                <div class="col col-friend-label">
+                                                    <label class="friend-label">{{Result.name}}</label>
+                                                    <div class="username-gray">@{{ Result.username }}</div>               
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                 {%endfor%}   
+                                    
+                                </div>
+                                
+                            </div>
+                            <div class="tab-pane container fade" id="menu1"> <br>
+                            <div id="my-requests">                    
+                                {% if Requests|length ==0 %}
+                                <div class="not-found">
+                                    <p>No Friend Requests Found</p>
+                                </div>
+                                {%endif%}
+                                {% for Request in Requests %}
+                                <a href="{{ url_for('profile_user', username=Request.sender.username) }}"  data-toggle="tooltip" data-placement="bottom" title="{{Request.sender.name}}">
+                                    <div class="container-fluid friend">
+                                        <div class="row row-profile-add">
+                                            <div class="col-3"> 
+                                                <img class="rounded-circle img-fluid friend-img" src="data:image/jpeg;base64,{{ Request.sender.img }}" onerror="this.src =`{{ url_for('static', filename='LastFriend_static/alt.png')}}`">
+                                           
+                                            </div>
+                                            <div class="col col-friend-label">
+                                                <label class="friend-label">{{Request.sender.name}}</label>
+                                                <div class="username-gray">@{{ Request.sender.username }}</div>               
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                             {%endfor%}   
+                                
+                            </div></div>
+                            <div class="tab-pane container fade" id="menu2"> <br>
+                                <div id="my-friends">
+                                    {% if Friends|length == 0 %}
+                                    <div class="not-found">
+                                        <p>No Friend Found</p>
+                                    </div>
+                                    {%endif%}
+                                    {% for Friend in Friends %}
+                                    {% if Friend.reciever.username == session_username %}
+                                    <a href="{{ url_for('profile_user', username=Friend.sender.username) }}"  data-toggle="tooltip" data-placement="bottom" title="{{Friend.sender.username}}">
+                                        <div class="container-fluid friend">
+                                            <div class="row row-profile-add">
+                                                <div class="col-3"> 
+                                                    <img class="rounded-circle img-fluid friend-img" src="data:image/jpeg;base64,{{ Friend.sender.img }}" onerror="this.src =`{{ url_for('static', filename='LastFriend_static/alt.png')}}`">
+                                               
+                                                </div>
+                                                <div class="col col-friend-label">
+                                                    <label class="friend-label">{{Friend.sender.name}}</label>
+                                                    <div class="username-gray">@{{ Friend.sender.username }}</div>               
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                    {%else%}
+                                    <a href="{{ url_for('profile_user', username=Friend.reciever.username) }}"  data-toggle="tooltip" data-placement="bottom" title="{{Friend.reciever.username}}">
+                                        <div class="container-fluid friend">
+                                            <div class="row row-profile-add">
+                                                <div class="col-3"> 
+                                                    <img class="rounded-circle img-fluid friend-img" src="data:image/jpeg;base64,{{ Friend.reciever.img }}" onerror="this.src =`{{ url_for('static', filename='LastFriend_static/alt.png')}}`">
+                                               
+                                                </div>
+                                                <div class="col col-friend-label">
+                                                    <label class="friend-label">{{Friend.reciever.name}}</label>
+                                                    <div class="username-gray">@{{ Friend.reciever.username }}</div>               
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                    {%endif%}
+                                 {%endfor%}   
+                                   
+                                </div>
+                            </div>
+                            <div class="tab-pane container fade" id="menu3"> <br>
+                                <div id="blocked-users">
+                                    {% if Blocks|length ==0 %}
+                                    <div class="not-found">
+                                        <p>No Blocked Users Found</p>
+                                    </div>
+                                    {%endif%}
+                                    {% for Block in Blocks %}
+                                    <a href="{{ url_for('profile_user', username=Block.blocked.username) }}"  data-toggle="tooltip" data-placement="bottom" title="{{Block.blocked.name}}">
+                                        <div class="container-fluid friend">
+                                            <div class="row row-profile-add">
+                                                <div class="col-3"> 
+                                                    <img class="rounded-circle img-fluid friend-img" src="data:image/jpeg;base64,{{ Block.blocked.img }}" onerror="this.src =`{{ url_for('static', filename='LastFriend_static/alt.png')}}`">
+                                            
+                                                </div>
+                                                <div class="col col-friend-label">
+                                                    <label class="friend-label">{{Block.blocked.name}}</label>
+                                                    <div class="username-gray">@{{ Block.blocked.username }}</div>               
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                {%endfor%}   
+                                    </div>
+
+                            </div>
+                        </div>
+                       
+           
+                </div>                
+                </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block script %}
+
+<script>
+    /*
+    $(document).ready(function(){
+      $('[data-toggle="tooltip"]').tooltip();   
+    });
+    */
+</script>
+{% endblock %}

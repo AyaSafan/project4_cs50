@@ -1,0 +1,110 @@
+{% extends "LastFriend_templates/layout_nav.html" %}
+
+
+{% block title %}layout_profile{% endblock %}
+
+
+
+{% block body %}
+
+{% block container %}
+<div class="background2">
+<div class="container"> 
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="profile">           
+                <img class="rounded-circle img-fluid avatar" src="data:image/jpeg;base64,{{ User.img }}" onerror="this.src =`{{ url_for('static', filename='LastFriend_static/alt.png')}}`">
+                
+
+            {% block profile %}
+                <br>
+                <div class="username">{{ User.name }}</div> 
+                <div class="username-gray">{{ User.username }}</div>               
+                <br>
+            {% endblock %}
+           </div>
+           <div class="info">
+               
+                <p><label class="info-header"> <i class="fa fa-calendar info-fa" aria-hidden="true"></i> Age</label>: {% if User.age != None %} {{ User.age }} {% endif %}</p>
+                <p><label class="info-header"> <i class="fa fa-venus-mars info-fa" aria-hidden="true"></i> Gender</label>: {% if User.gender != "__" %} {{ User.gender }} {% endif %}</p>
+                <p><label class="info-header"> <i class="fa fa-child info-fa" aria-hidden="true"></i> Height</label>: {{ User.height }}</p>
+                <p><label class="info-header"> <i class="fas fa-tachometer-alt info-fa"></i> Weight</label>: {{ User.weight }}</p>
+                <p><label class="info-header"> <i class="fa fa-flag info-fa" aria-hidden="true"></i> Ethnicity</label>: {{ User.ethnicity }}</p>
+                <p><label class="info-header"> <i class="fa fa-heart info-fa" aria-hidden="true"></i> Orientation</label>: {{ User.orientation }}</p>
+                <p><label class="info-header"> <i class="fa fa-pencil-alt info-fa" aria-hidden="true"></i> Job</label>: {{ User.job }}</p>
+                <p><label class="info-header"> <i class="fa fa-puzzle-piece info-fa info-fa" aria-hidden="true"></i> Interests</label><br> {{ User.interests }}</p>
+                <p><label class="info-header"> <i class="fa fa-book info-fa" aria-hidden="true"></i> Favorite Movies / TV Shows / Books</label> <br> {{ User.favorite }} </p>
+
+            </div>
+        </div>
+        
+        <div id= "remove_on_block"class="col-lg-8"{%block remove_on_block%}{%endblock%} >
+            <div class="all-cards justify-content-center">
+                <div class="card card1">
+                    <h5 class="card-header card1-header">Who I was in Life</h5>
+                    <div class="card-body">
+                      <p class="card-text">{{ User.life }}</p>
+                    </div>
+                  </div> 
+                  <br>
+
+                  <div class="card card2">
+                    <h5 class="card-header card2-header">Bucket List</h5>
+                    <div class="card-body">
+                      <p class="card-text"> {{ User.bucket }}</p>
+                    </div>
+                  </div> 
+                  <br>
+
+                  <div class="card card3">
+                    <h5 class="card-header card3-header">Final Thoughts</h5>
+                    <div class="card-body">
+                      <p class="card-text"> {{ User.thoughts }}</p>
+                    </div>
+                  </div> 
+                  <br>
+                 
+            </div>
+            
+                {% block post_submit %}
+                {% endblock %} 
+                 
+            <div class="posts-container">
+                <h5 class="card-header card4-header">Last Day Thoughts</h5>
+                <br>
+                <div class="posts" id="posts">
+                    {% for Post in Posts %}
+                    <div class="container-fluid post" id= {{Post.id}} >
+                        {%block btn_hide%}
+                        {%endblock%}
+
+                        <div>
+                            <label class="post-header"> {{ Post.title }}</label> 
+                            <div class="post-time"> {{ Post.date }} </div>
+
+                        </div>
+                        <hr class="post">
+
+                        <div class="container post-body">
+
+                            {{ Post.post }}
+                        </div>
+                        <hr class="post">                    
+                    </div>
+                    {% endfor %}
+                    </div>
+                
+            </div>
+        </div>    
+            
+    </div>
+</div>
+</div>
+{% endblock %}
+
+{% block modal %}
+{% endblock %}
+{% endblock %}
+
+{% block script %}
+{% endblock %}

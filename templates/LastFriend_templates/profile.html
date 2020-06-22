@@ -1,0 +1,200 @@
+{% extends "LastFriend_templates/layout_profile.html" %}
+
+{% block title %}Profile{% endblock %}
+
+
+{% block link_script %}
+<script src="{{ url_for('static', filename='LastFriend_static/profile.js') }}"></script>
+{% endblock %}
+
+{%block btn_hide%}
+<button  class="hide hide-post">x</button>  
+{%endblock%}
+
+{% block profile %}
+<div class="settings"><span class = "icon" onclick="myFunction()"><i class="fa fa-cog" aria-hidden="true"></i></span> </div>
+<br>
+<div class="username">{{ User.name }}</div>
+<div class="username-gray">@{{ User.username }}</div>               
+
+<div id="username" style="display: none;">{{ User.username }}</div>
+
+<br>
+
+        <div id="menu">
+            
+                <button class="btn_menu" type="button"  data-toggle="modal" data-target="#edit_modal">Edit Profile Info</button>
+                <hr class="menu">
+                <button class="btn_menu" type="button"  data-toggle="modal" data-target="#pic_modal">Edit Profile Picture</button>
+                <hr class="menu">
+            <form action="{{ url_for('logout') }}">
+                <button class="btn_menu" >Log Out</button></form>  
+                <hr class="menu">
+                <button class="btn_menu" type="button"  data-toggle="modal" data-target="#delete_modal">Delete Account</button> 
+                <hr class="menu">
+            </div>
+{% endblock %}
+
+{% block post_submit %}
+<div class="post-submit"> 
+    <form id="postform">
+        <div class="form-group">
+        <label class="txtarea-header" for="txtarea"> <i class="fas fa-angle-double-right prefix"></i> Share your last day thoughts... </label>
+        </div>        
+        <div class="form-group">
+        <input class="form-control" placeholder="Title ..." id="title" name="title">
+        </div>
+        <div class="form-group">
+        <textarea id="post" class="md-textarea form-control txtarea" placeholder="Write your last thoughts ..." rows="3" name="post"></textarea> 
+        </div> 
+         
+        <button type="submit" class="btn btn-send"><i class="fas fa-angle-double-right fa-add fa-arrow"></i></button>             
+    </form>   
+</div>
+{% endblock %}
+
+{% block modal %}
+<!-------------------------------------------------Modal Delete-------------------------------------------------------------->
+<div class="modal fade" id="delete_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title"> Delete Account </h3>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            Are you sure you want to delete your account permanently?
+        </div>
+        <form action="{{ url_for('delete_account') }}"  method="post">
+            <center><br><button type="submit" class="btn btn-primary btn-lg btn-custome">Delete Account</button></center>
+        </form>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+<!------------------------------------------------Modal Pic--------------------------------------------------------------->
+<div class="modal fade" id="pic_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title" >Edit Profile Picture</h3>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form id ="pic_form" action="{{ url_for('profile_pic') }}" enctype="multipart/form-data" method="post" >
+                <div class="form-group">
+                    <input type="file" class="form-control-file" id="img" aria-describedby="fileHelp" accept="image/*" name="img">
+                  </div>         
+                  
+                <center><br><button type="submit" class="btn btn-primary btn-lg btn-custome">SUBMIT</button></center>
+              </form>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  <!------------------------------------------------Modal Edit--------------------------------------------------------------->
+
+<div class="modal fade" id="edit_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title" id="exampleModalLabel">Edit Profile Info</h3>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form id ="edit_form" action="{{ url_for('profile_edit') }}" enctype="multipart/form-data" method="post" >
+               
+                  <div class="form-group">
+                    <label for="sign_username">Name</label>
+                    <input class="form-control" id="sign_name" placeholder="Enter your name ..." name="sign_name" required value={{ User.name }}>
+                  </div>
+               <div class="form-group">
+                  <label for="sign_age" >Age</label>
+                  <input class="form-control" type="number" id="sign_age" name="sign_age" min="3" {% if User.age != None %} value={{ User.age }} {% endif %}>
+                </div>
+                <div class="form-group">
+                  <label for="sign_gender">Gender</label>
+                  <select name="sign_gender" class="custom-select">
+                    <option selected value="__">__</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="sign_height">Height</label>
+                  <input class="form-control" id="sign_height" placeholder="Enter your height ..." name="sign_height" value={{ User.height }}>
+                </div>
+                <div class="form-group">
+                  <label for="sign_weight">Weight</label>
+                  <input class="form-control" id="sign_weight" placeholder="Enter your weight ..." name="sign_weight" value={{ User.weight }}>
+                </div>
+                <div class="form-group">
+                  <label for="sign_ethnicity" >Ethnicity</label>
+                  <input class="form-control" id="sign_ethnicity" placeholder="Enter your ethnicity ..." name="sign_ethnicity" value={{ User.ethnicity }}>
+                </div>
+                <div class="form-group">
+                  <label for="sign_orientation">Orientation</label>
+                  <input class="form-control" id="sign_orientation" placeholder="Enter your orientation ..." name="sign_orientation" value={{ User.orientation }}>
+                </div>
+                <div class="form-group">
+                  <div class="form-group">
+                    <label for="sign_job">Job</label>
+                    <input class="form-control" id="sign_job" placeholder="Enter your job ..." name="sign_job" value={{ User.job }}>
+                  </div>
+                  <div class="form-group">
+                    <label for="sign_interests">Interests</label>
+                    <textarea class="form-control" id="sign_interests" rows="3" name="sign_interests">{{ User.interests }}</textarea>
+                  </div>
+                  <div class="form-group">
+                    <label for="sign_movies">Favorite Movies / TV Shows / Books</label>
+                    <textarea class="form-control" id="sign_favorite" rows="3" name="sign_favorite">{{ User.favorite }}</textarea>
+                  </div>
+                  <div class="form-group">
+                    <label for="sign_who">Who You Were in Life</label>
+                    <textarea class="form-control" id="sign_life" rows="3" name="sign_life">{{ User.life }}</textarea>
+                  </div>
+                  <div class="form-group">
+                    <label for="sign_bucket">Bucket List</label>
+                    <textarea class="form-control" id="sign_bucket" rows="3" name="sign_bucket">{{ User.bucket }}</textarea>
+                  </div>
+                  <div class="form-group">
+                    <label for="sign_final">Final Thoughts</label>
+                    <textarea class="form-control" id="sign_thoughts" rows="2" name="sign_thoughts">{{ User.thoughts }}</textarea>
+                  </div>
+                                    
+                <center><br><button type="submit" class="btn btn-primary btn-lg btn-custome">SUBMIT</button></center>
+              </form>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+ 
+   <!------------------------------------------------------------------------------------------------------------------------->
+
+
+{% endblock %}
+
+
+{% block script %}
+<script>
+    function myFunction() {
+      var x = document.getElementById("menu");
+      if (x.style.display === "block") {
+        x.style.display = "none";
+      } else {
+        x.style.display = "block";
+      }
+    }
+
+</script>
+{% endblock %}

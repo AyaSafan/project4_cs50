@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+ 
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+
+  <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+
+
+
+  {% block link_script %}{% endblock %}
+  
+  {% block layout_script %}{% endblock %}
+
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='LastFriend_static/styles.css') }}" />
+
+  <title>{% block title %}{% endblock %} - Last Friend </title>
+</head>
+
+<body>
+
+  <audio id="audio" src="{{ url_for('static', filename='audio.mp3') }}" preload="auto" muted></audio>
+   
+  <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+  <div class="navbar-collapse left collapse">           
+  </div>
+ 
+  <a class="navbar-brand  mx-auto" href="#">L A S T &nbsp; F R I E N D</a>
+
+  {% block nav_toggle %}
+  {% endblock %}
+
+  <div class=" navbar-collapse right collapse" id="navbarText">
+    <ul class="navbar-nav ml-auto">
+        {% block nav_right %}
+        {% endblock %}
+    </ul>
+  </div>
+  </nav>
+
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+        <div id="alert">
+            {% for message in messages %}
+            {{ message }}
+            {% endfor %}
+        </div>
+  {% endif %}
+  {% endwith %}
+
+{% block body %}
+
+{% endblock %}
+
+</body>
+
+{% block script %}
+<script>
+  
+  document.addEventListener('DOMContentLoaded', () => { 
+
+    if(document.getElementById('alert') != null ){
+    if(document.getElementById('alert').innerHTML != "" ){        
+        alert(document.getElementById('alert').innerHTML);
+        document.querySelector('#alert').innerHTML = ""; 
+   };
+   };
+  
+   
+  }); 
+   </script>
+{% endblock %}
+
+</html>

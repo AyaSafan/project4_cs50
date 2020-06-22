@@ -1,0 +1,717 @@
+
+$font-color0: #000000
+$font-color1: #070B34
+$font-color2: #141852
+$font-color3: #2B2F77
+$font-color4: #483475	
+$font-color5: #6B4984
+$font-color6: #855988
+$font-color7: #97659a
+
+$btn-accept: #009999
+$btn-remove:#ff6666
+
+
+    
+@font-face 
+    font-family: ALDORA-Cutting 
+    src: url("../fonts/ALDORA-Cutting.otf") format('opentype')
+
+
+@font-face 
+    font-family: ALDORA 
+    src: url("../fonts/ALDORA.otf") format('opentype')
+
+@keyframes hide
+    0%
+        opacity: 1
+        height: 100%
+        line-height: 100%
+        padding: 20px
+        margin-bottom: 10px
+    
+    75% 
+        opacity: 0
+        height: 100%
+        line-height: 100%
+        padding: 20px
+        margin-bottom: 10px
+        
+    100% 
+        opacity: 0
+        height: 0px
+        line-height: 0px
+        padding: 0px
+        margin-bottom: 0px
+    
+
+html,body
+    height: 100%
+    margin: 0
+    padding-right: 0px !important
+    overflow-y: scroll
+    font-family: ALDORA
+    font-size: 20px
+
+#alert
+    height: 0px
+    display: none
+
+.nopadding 
+    padding: 0 !important
+    margin: 0 !important
+
+.row
+    min-height: 100vh
+label
+    margin-bottom: 0px
+a
+    color: $font-color1
+    text-decoration: none
+
+
+/***************************************************index*****************************************/
+@media (min-width: 768px)
+    .gradiant
+        background: linear-gradient(100deg, rgba(2,0,36,1) 21%, rgba(43,43,107,1) 53%, rgba(43,43,107,0.8) 60%, rgba(255,255,255,0) 80%)
+        
+
+    .background
+        background-image: url("bg.jpeg")
+        min-height: 100%
+        width: 100%
+        background-position: right
+        background-repeat: no-repeat
+        background-size: 52% 100%    
+        float: right
+        
+
+    .intro-card
+        background-color: transparent
+        margin-top: 15%
+
+@media (max-width: 768px)
+    .gradiant
+        background: transparent
+              
+    .background
+        background-image: url("bg.jpeg")
+        min-height: 100%
+        width: 100% 
+        background-position: center
+        background-repeat: no-repeat
+        background-size: 100% 100%
+        position: relative
+  
+      
+    .intro-card
+        background-color: rgba(0, 0, 0, 0.5)
+
+
+.buttons
+    padding: 6%
+    background-color: transparent
+    border: transparent
+    
+
+.intro-card
+    padding: 10%
+    border: transparent
+    color: white
+    font-family: ALDORA 
+    font-size: x-large
+
+/***********************************************************navbar******************************************/
+@media (min-width: 992px) 
+    .navbar-brand    
+        position: absolute
+        left: 25%
+        transform: translateX(-50%)
+    
+
+.navbar
+    background-color: $font-color0
+    height: 50px
+    padding: 0px
+
+.navbar-collapse, .navbar-nav
+    background-color: $font-color0
+    padding-left: 10px
+
+.nav-tabs .nav-tab.active .nav-link,
+.nav-tabs .nav-tab:hover .nav-link,
+.navbar-nav .nav-item.active .nav-link,
+.navbar-nav .nav-item:hover .nav-link,
+.fa, .fas
+    color: $font-color6 !important
+
+
+.navbar-brand
+    font-family: ALDORA-Cutting
+    font-size: x-large
+        
+    
+   
+.nav-link
+    font-family: ALDORA
+    font-size: x-large
+
+.fa, .fas
+    font-size: 30px
+
+/****************navtabs**********************************/
+.nav-tabs
+    border-bottom: 1px solid $font-color2 !important 
+
+.nav-tabs .nav-item .active
+    border: 1px solid $font-color2 !important
+    background: $font-color2
+    color: white
+
+/*********************************************************buttons**********************************************/
+.btn-custome, .btn-custome:focus
+    background-color: $font-color1
+    border-color: $font-color6
+    outline: none
+    box-shadow: none !important
+
+  
+.btn-custome:hover, .btn-custome:active
+    background: $font-color6 !important
+    border-color: $font-color6 !important
+    color: $font-color1
+    cursor: pointer
+    outline: none
+    box-shadow: none !important
+
+.btn-custome.btn-user
+    border-color: black !important
+    color: rgba(255,255,255,.5)
+    font-size: x-large
+    padding-top: 2px
+    padding-left: 0px
+    margin-left: 0
+    border-width: 0
+  
+.btn-custome.btn-user:hover
+    background-color: $font-color1 !important
+    color: $font-color6 !important 
+  
+
+.btn_menu
+    background-color: transparent
+    border-color: transparent
+    height: 20px
+
+.btn_menu:hover
+    cursor: pointer
+
+.btn_menu:active
+    border: none
+    border-bottom: solid
+
+.btn_menu:focus 
+    outline: none
+hr.menu
+    height: 2px
+    margin: 5px
+    margin-left: 40px
+    margin-right: 40px
+    color: $font-color5
+    background: $font-color6
+
+.btn-send
+    background-color: $font-color6 
+    height: 50px
+    width: 50px   
+    border-radius: 50% !important
+    text-align: center
+    position: relative
+    left: 90%
+
+.btn-send:hover
+    background-color: $font-color5
+
+
+.fa-send
+    color: white !important
+    font-size: 20px
+
+.btn-add
+    background-color: $font-color6 
+    height: 50px
+    width: 50px   
+    border-radius: 50%
+    text-align: center
+    padding: 0px
+    
+    
+
+.fa-add
+    color: white !important
+    font-size: 25px
+    vertical-align: bottom
+    margin-top: 25%
+
+  
+
+.btn-outline-secondary
+    background-color: $font-color6 
+    color: white
+
+.btn-outline-secondary:hover
+    background-color: $font-color5
+
+.hide
+    float: right
+    background-color: transparent
+    border-style: none
+    color: #b3b3b3
+    font-size: 40px
+  
+
+.hide:hover
+    cursor: pointer
+
+.hide-post
+    float: none
+    left: 100%
+    display: block
+    position: relative
+    
+    
+/**********************************************************modals**********************************************/
+
+.modal-open
+    background-color: rgba(140, 140, 140, 0.5)
+    padding: 0px
+
+.modal-content
+    background-color: $font-color0
+    color: white
+    padding: 20px
+    font-family: ALDORA
+    font-size: large
+
+.modal-title
+    font-family: ALDORA
+    color: $font-color6
+
+form .form-group .form-control
+    background-color: transparent
+    color: white
+    border-color: transparent
+    border-bottom-color: white
+
+form .form-group .form-control:focus
+    border-color: transparent
+    border-bottom-color: white
+    box-shadow: 0 8px 6px -6px rgba(255,255,255,0.75)
+
+.close, .close:hover, .close:focus
+    color: white
+    outline: none
+    box-shadow: none !important
+
+/**********************************************************layout_profile / messages containers**********************************************/
+.background2
+    background: linear-gradient(180deg, $font-color1 0%, $font-color2 25%, $font-color3 53%, $font-color4 69%, $font-color5 88%, $font-color6 96%)
+
+.profile, .post-submit, .info, .all-cards, .messages-friends ,.chat
+    margin-top: 15%
+    margin-bottom: 5%
+    min-width: 100%
+    border-radius: 10px
+    padding: 5%
+    background: white
+
+.profile
+    background: linear-gradient(0deg, rgba(255,255,255,1) 66%, rgba(255,255,255,0.8) 70%, rgba(255,255,255,0) 88%)
+    text-align: center
+ 
+
+.info
+    margin-top: 10%
+
+.post-submit
+    margin-top: 4%
+
+.posts-container
+    margin-top: 4%
+    margin-bottom: 5%
+    min-width: 100%
+    border-radius: 10px
+    background: white
+
+
+    
+/******************************profile*********************************************/
+
+.avatar
+    vertical-align: middle
+    height: 250px
+    width: 250px
+    padding: 20px
+    -webkit-box-shadow: 0px 0px 31px -1px rgba(133,89,136,0.61)
+    -moz-box-shadow: 0px 0px 31px -1px rgba(133,89,136,0.61) 
+    box-shadow: 0px 0px 31px -1px rgba(133,89,136,0.61)
+
+.settings
+    position: relative
+    background: white
+    border-radius: 50%
+    height: 40px
+    width: 40px
+    padding: 5px
+    margin-top: -50px
+    margin-left: 60%
+    text-align: center
+    -webkit-box-shadow: 0px 0px 14px 0px rgba(20,24,82,1)
+    -moz-box-shadow: 0px 0px 14px 0px rgba(20,24,82,1)
+    box-shadow: 0px 0px 14px 0px rgba(20,24,82,1)
+        
+span:hover
+    cursor: pointer
+
+#menu
+    display: none
+
+.username
+    font-family: ALDORA-Cutting
+    font-size: xx-large
+    font-weight: bold
+    color: $font-color2
+
+.username-gray
+    font-family: ALDORA
+    font-size: large
+    font-weight: normal
+    color: gray
+
+
+.row-profile-add
+    min-height: 30px
+
+/******************************info*********************************************/
+
+.info-fa
+    height: 20px 
+    width: 20px
+    font-size: 18px
+    margin-right: 2px
+    color: $font-color3 !important
+
+.info-header, .card-header, .posts-header , .post-header
+    font-family: ALDORA-Cutting
+    font-weight: bold
+    font-size: 20px
+
+/******************************cards*********************************************/
+.card
+    width: 100%
+    color: $font-color0
+    border-color: $font-color6
+    border-width: 1px
+
+.card-header
+    color: white
+    font-size: 18px
+
+.card1
+    border-color: $font-color4
+
+.card1-header
+    border-color: $font-color4
+    background-color: $font-color4
+    
+
+.card2
+    border-color: $font-color5
+
+.card2-header
+    border-color: $font-color5
+    background-color: $font-color5
+
+.card3
+    border-color: $font-color6
+
+.card3-header
+    border-color: $font-color6
+    background-color: $font-color6
+
+/******************************posts*********************************************/
+#post, #title , #search-firend-input
+    box-shadow: 0 1px 0 0 $font-color0
+    color: $font-color0
+
+#post:focus, #title:focus, #search-firend-input:focus
+    border: 1px solid $font-color6 
+    box-shadow: 0 1px 0 0 $font-color6
+
+
+.txtarea-header
+    font-family: ALDORA
+    font-weight: bold
+    font-size: 20px 
+    color: $font-color6
+
+
+.card4-header
+    border-color: $font-color1
+    background-color: $font-color1
+    text-align: center
+    border-radius: 10px
+    color: white
+
+.posts
+    padding: 5%
+    padding-top: 0px
+    //reverse div order
+    display: flex
+    flex-direction: column-reverse
+
+hr.post
+    margin: 1px
+
+
+.container-fluid.post
+    animation-name: hide
+    animation-duration: 2s
+    animation-fill-mode: forwards
+    animation-play-state: paused 
+
+.post-body
+    padding: 2%
+    word-wrap: break-word
+    
+
+.post-time
+    float: right
+    font-family: ALDORA
+    color: gray
+    font-size: 15px
+
+/***************************buttons colored circular*******************************/
+.btn-add.accept
+    background-color: $btn-accept
+
+.btn-add.remove
+    background-color: $btn-remove
+
+.btn-add.block
+    background-color: $font-color0
+
+/**************************************messages.html**************************************/
+.chat
+    margin-top: 50px
+    margin-bottom: 25px
+    padding: 10px
+    min-height: 100vh
+    display: flex
+    flex-direction: column
+
+.chat-user-header
+    font-family: ALDORA !important
+    background-color: $font-color2 !important
+    font-weight: bold
+    font-size: x-large
+    text-align: center 
+    border-radius: 10px !important
+    height: 60px
+
+.col-messages
+    padding-right: 10px
+    padding-left: 10px
+    min-height: 100vh
+
+@media (max-width: 576px) 
+    .col-messages
+        padding-right: 2px
+        padding-left: 2px
+
+
+#form_msg
+    margin-top: auto
+    width: 100%
+    padding: 10px
+    border-top: 1px solid #ccc
+
+/****textarea*******/
+.message-box 
+    border-radius: 10px !important
+
+.btn-send.message
+    left: 5px
+
+
+/*** 3 divs wrappers to make chat start at bottom*************/
+.wrapper
+    vertical-align: bottom
+    height: 550px
+    width: 100%
+    transform: rotate(180deg)
+    margin-top: 30px   
+
+.messages
+    max-height: 550px
+    overflow: auto
+    direction: rtl
+
+.inner_feed
+    display: flex
+    flex-direction: column
+    padding: 20px
+    padding: 0px
+
+#feed
+    transform: rotate(180deg)
+    margin-top: 10px
+    padding: 5px
+    direction: ltr
+/************************message*****************************/
+.container-fluid.message
+    border: 2px solid 
+    border-radius: 15px
+    padding: 25px
+    width: auto
+    height: auto
+    word-wrap: break-word
+    max-width: 30vw
+    animation-name: hide
+    animation-duration: 2s
+    animation-fill-mode: forwards
+    animation-play-state: paused  
+ 
+.container-fluid.message.me
+    border-color: $font-color5
+    background-color: $font-color6
+    margin-right: 0px
+    color: white
+
+.container-fluid.message.other
+    border-color: #ccc
+    background-color: #ddd
+    margin-left: 0px
+    color: $font-color0
+
+.container-fluid.message::after 
+    content: ""
+    clear: both
+    display: table
+
+.time-right
+    float: right
+    color: #b3b3b3
+
+.time-left
+    float: left
+    color: #999
+
+
+   
+/***********************scrollbar*******************************/
+::-webkit-scrollbar 
+    width: 10px
+
+
+/* Track */
+::-webkit-scrollbar-track 
+    background: #f1f1f1
+
+ 
+/* Handle */
+::-webkit-scrollbar-thumb 
+    background: #888 
+
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover
+    background: #555 
+
+
+/****************my friends in messaafes page******************/
+.tab 
+    margin-top: 15%
+    margin-bottom: 5%
+    min-width: 100%
+    border-radius: 10px
+    padding: 5%
+    background: white
+    padding-bottom: 0px
+
+.tab-friends
+    //reverse div order
+    display: flex
+    flex-direction: column-reverse
+
+
+.container-fluid.friend
+    border-bottom: 1px solid #ccc
+    margin-bottom: 10px
+
+
+
+.cut-text  
+    overflow: hidden
+    display: inline-block
+    text-overflow: ellipsis
+    white-space: nowrap
+    width: 90%
+    font-size: x-large
+
+.col-friend-label
+    margin-left: 0px
+    padding: 0px
+    
+.friend-label
+    font-family: ALDORA
+    font-weight: bold
+    font-size: x-large
+    color: $font-color0 !important
+    
+.numberCircle 
+    border-radius: 50%
+    width: 35px
+    height: 35px
+    padding: 5%
+    float: right
+    margin-top: 50%
+
+    background: $font-color6
+    border: 2px solid #666
+    color: #ccc
+    font-size: 15px
+    text-align: center
+
+
+/************************friends.html*****************************************************/
+.col-friends, .col-friend-label
+    margin: auto
+
+
+.catgory-header
+    padding: 5px
+
+.not-found
+    padding: 50px
+    margin: auto
+    text-align: center
+    color: #ccc
+
+.btn-search
+    left: 0%
+    margin-top: 12px
+
+
+.friend-img
+    height: 15vw
+    width: 15vw
+    padding: 1vw
+@media (min-width: 992px)
+    .friend-img
+        height: 10vw
+        width: 10vw
+        padding: 5%
+
+#submit:disabled
+    background-color: #ccc    
