@@ -27,9 +27,7 @@ html, body {
   height: 100%;
   margin: 0;
   padding-right: 0px !important;
-  overflow-y: scroll;
-  font-family: ALDORA;
-  font-size: 20px; }
+  overflow-y: scroll; }
 
 #alert {
   height: 0px;
