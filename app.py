@@ -31,7 +31,7 @@ def login_required(test):
 users = {}
 
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://ayasafan:25399@localhost/postgres"
+app.config["SQLALCHEMY_DATABASE_URI"] = os.environ['DATABASE_URL']
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False  
 app.secret_key =  os.getenv("SECRET_KEY")
 db.init_app(app)
