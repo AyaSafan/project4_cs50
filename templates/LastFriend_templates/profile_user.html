@@ -1,0 +1,90 @@
+{% extends "LastFriend_templates/layout_profile.html" %}
+
+{% block title %}{{ User.username }}{% endblock %}
+
+{% block link_script %}
+<script src="{{ url_for('static', filename='LastFriend_static/profile_user.js') }}"></script>
+{% endblock %}
+
+{% block profile %}
+<br>
+<div class="username">{{ User.name }}</div>
+<div class="username-gray">@{{ User.username }}</div>               
+
+<div id="profile_user_username" style="display: none;">{{ User.username }}</div>
+<br>
+<div class="container-fluid" id="btns-container">
+
+{%if User.username !=  session_username%}
+    {% if friends == None %} 
+        {% if not block %}  
+        <div class="row row-profile-add" id="initial_btns">
+            <div class="col">
+                <a href="#" id="send_friend_request" class="btn btn-add pluse" data-toggle="tooltip" data-placement="bottom" title="Send Friend Request" ><i class="fa fa-plus fa-add" aria-hidden="true"></i></a>
+            </div>
+            <div class="col">
+                <a href="#"  id="block" class="btn btn-add block" data-toggle="tooltip" data-placement="bottom" title="Block User"><i class="fa fa-ban fa-add" aria-hidden="true"></i> </i></a>
+            </div>
+        </div>
+        {% endif %}
+    {% endif %}
+    {% if friends == True %}
+        <div class="row row-profile-add" id="friends_btns">
+            <div class="col">
+                <a href="#" id="message_request"  class="btn btn-add message" data-toggle="tooltip" data-placement="bottom" title="Message Friend"><i class="fa fa-comments fa-add " aria-hidden="true"></i></a>
+            </div>
+            <div class="col">
+                <a href="#" id="remove_friend_request" class="btn btn-add remove" data-toggle="tooltip" data-placement="bottom" title="Remove Friend"><i class="fa fa-times fa-add" aria-hidden="true"></i></a>
+            </div>
+            <div class="col">
+                <a href="#" id="block" class="btn btn-add block" data-toggle="tooltip" data-placement="bottom" title="Block User"><i class="fa fa-ban fa-add" aria-hidden="true"></i></a>
+            </div>
+        </div>
+    {%else%}
+        {% if recieved_request != None %}
+        <div class="row row-profile-add" id=" accept_remove_btns">
+            <div class="col">
+                <a href="#" id="accept_friend_request"  class="btn btn-add accept" data-toggle="tooltip" data-placement="bottom" title="Accept Friend Request"><i class="fa fa-check fa-add" aria-hidden="true"></i></a>
+            </div>
+            <div class="col">
+                <a href="#" id="remove_friend_request"  class="btn btn-add remove" data-toggle="tooltip" data-placement="bottom" title="Remove Friend Request"><i class="fa fa-times fa-add" aria-hidden="true"></i></a>
+            </div>
+            <div class="col">
+                <a href="#" id="block" class="btn btn-add block" data-toggle="tooltip" data-placement="bottom" title="Block User"><i class="fa fa-ban fa-add" aria-hidden="true"></i> </a>
+            </div>
+        </div>
+        {% endif %}
+        {% if sent_request != None %}
+        <div class="row row-profile-add" id="cancel_reqest_btns">
+            <div class="col">
+                <a href="#" id="remove_friend_request" class="btn btn-add pluse" data-toggle="tooltip" data-placement="bottom" title="Cancel Friend Request" ><i class="fa fa-minus fa-add" aria-hidden="true"></i></a>
+            </div>
+            <div class="col">
+                <a href="#" id="block" class="btn btn-add block" data-toggle="tooltip" data-placement="bottom" title="Block User"><i class="fa fa-ban fa-add" aria-hidden="true"></i> </a>
+            </div>
+        </div>
+        {% endif %}
+    {% endif %}
+
+    {% if block %}
+    <div class="row row-profile-add" id="unblock_btns">
+        <div class="col">
+            <a href="#" id="unblock" class="btn btn-add unblock" data-toggle="tooltip" data-placement="bottom" title="Unblock User"><i class="fa fa-ban fa-add" aria-hidden="true"></i></a>
+        </div>
+
+    </div>
+    {% endif %}
+{% endif %}
+</div>
+
+{% endblock %}
+
+{%block remove_on_block%}
+{% if block %}style="display: none;"
+{%else%} style="display: block;"
+{% endif %}
+{%endblock%}
+
+{% block script %}
+
+{% endblock %}
