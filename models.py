@@ -44,7 +44,7 @@ class User(db.Model):
 
     message_sent = db.relationship('Message', backref = 'sender', lazy = 'dynamic', foreign_keys = 'Message.from_username', cascade="all, delete-orphan" )
     message_recieved = db.relationship('Message', backref = 'reciever', lazy = 'dynamic', foreign_keys = 'Message.to_username', cascade="all, delete-orphan" )
-    last_msg_username = db.Column(db.String, db.ForeignKey("User.username"), nullable = True) 
+    last_msg_username = db.Column(db.String, db.ForeignKey("User.username", ondelete='SET NULL'), nullable = True) 
 
     def __str__(self):
         return f"{self.username}"
