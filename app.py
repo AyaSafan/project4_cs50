@@ -410,6 +410,12 @@ def block():
     block = Block(from_username = session["username"], to_username= profile_user_username)
     db.session.add(block)
     db.session.commit()
+
+    # if the blocked user is opening the chat of the blocker then set it to none
+    user =User.query.filter_by(username= profile_user_username).first()
+    if user.last_msg_username == session["username"]:
+        user.last_msg_username = None
+
     return jsonify({"success": True})
 
 @app.route("/unblock" , methods=["POST"])
@@ -471,38 +477,67 @@ def last_msg_username():
         db.session.commit()
         return jsonify({"success": True})
 
-@app.route("/unseen_counter" , methods=["POST"])
+@app.route("/reset_unseen_counter" , methods=["POST"])
 @login_required
-def unseen_counter():
-    unseen_username = request.form.get("unseen_username")
-    unseen = request.form.get("unseen")
-    friend = Request.query.filter(or_(and_(Request.from_username == session["username"], Request.to_username == unseen_username, Request.accepted == True),and_(Request.from_username == unseen_username, Request.to_username == session["username"], Request.accepted == True))).first()
+def reset_unseen_counter():
+    friend_username = request.form.get("friend_username")
+    friend = Request.query.filter(or_(and_(Request.from_username == session["username"], Request.to_username == friend_username, Request.accepted == True),and_(Request.from_username == friend_username, Request.to_username == session["username"], Request.accepted == True))).first()
     if friend != None:
-        friend.unseen = unseen
-        friend.unseen_username = unseen_username
-    db.session.commit() 
-    return jsonify({"success": True})  
+        friend.unseen = 0
+        friend.unseen_username = None
+        db.session.commit() 
+        return jsonify({"success": True})  
+    return jsonify({"success": False})  
 
 @socketio.on('emit_msg', namespace='/private')
 @login_required
 def emit_msg(data):
-    msg = data['msg']
-    date = str(datetime.datetime.now().strftime("%d %b. %Y @%H:%M"))
-    new_msg = Message(from_username = session['username'], to_username = data['reciever_username'], msg= msg, date = date)    
-    db.session.add(new_msg)
-    db.session.flush()
-    msg_id = new_msg.id 
-    #set friend last_msg
-    friend = Request.query.filter(or_(and_(Request.from_username == session["username"], Request.to_username == data['reciever_username'], Request.accepted == True),and_(Request.from_username == data['reciever_username'], Request.to_username == session["username"], Request.accepted == True))).first()
-    if friend != None:
-        friend.last_msg = msg
-    db.session.commit()    
+    session_sid = users[session["username"]]
+    block = Block.query.filter(or_(and_(Block.from_username == session["username"], Block.to_username == data['reciever_username']),and_(Block.to_username == session["username"], Block.from_username == data['reciever_username']))).first()
+    if block != None:
+        user =User.query.filter_by(username= session['username']).first()
+        user.last_msg_username = None
+        db.session.commit()
+        emit('failed_msg',{'alert': 'You can not send messages to this user' }, room=session_sid)
 
-    if data['reciever_username'] in users:
-        reciever_sid = users[data['reciever_username']]
-        session_sid = users[session["username"]]
-        emit('announce_msg',  {"msg": msg, "sender": session["username"], 'date':date, 'msg_id':msg_id}, room=reciever_sid)
-        emit('announce_msg_me',  {"msg": msg, "sender": session["username"], 'date':date, 'msg_id':msg_id}, room=session_sid)
+    else:
+        friend = Request.query.filter(or_(and_(Request.from_username == session["username"], Request.to_username == data['reciever_username'], Request.accepted == True),and_(Request.from_username == data['reciever_username'], Request.to_username == session["username"], Request.accepted == True))).first()
+        if friend == None:
+            user =User.query.filter_by(username= session['username']).first()
+            user.last_msg_username = None
+            db.session.commit()
+            emit('failed_msg',{'alert': 'You can not send messages to this user' }, room=session_sid)
+        else:
+            msg = data['msg']
+            date = str(datetime.datetime.now().strftime("%d %b. %Y @%H:%M"))
+            new_msg = Message(from_username = session['username'], to_username = data['reciever_username'], msg= msg, date = date)    
+            db.session.add(new_msg)
+            db.session.flush()
+            msg_id = new_msg.id 
+            #set friend last_msg         
+            friend.last_msg = msg
+            db.session.commit()
+
+        
+            #announce to sender            
+            emit('announce_msg_me',  {"msg": msg, "sender": session["username"], 'reciever': data['reciever_username'],'date':date, 'msg_id':msg_id}, room=session_sid)
+            #increase unseen counter
+            friend = Request.query.filter(or_(and_(Request.from_username == session["username"], Request.to_username == data['reciever_username'], Request.accepted == True),and_(Request.from_username == data['reciever_username'], Request.to_username == session["username"], Request.accepted == True))).first()
+            if friend != None:
+                if friend.unseen_username !=  session["username"]:
+                    friend.unseen_username =  session["username"]
+                    friend.unseen = 0
+                
+                friend.unseen += 1
+                counter = friend.unseen
+                
+            db.session.commit() 
+
+            if data['reciever_username'] in users:
+                reciever_sid = users[data['reciever_username']]        
+                emit('announce_msg',  {"msg": msg, "sender": session["username"], 'reciever': data['reciever_username'], 'date':date, 'msg_id':msg_id, 'counter': counter}, room=reciever_sid)
+                
+
 
 @socketio.on('emit_delete_msg', namespace='/private')
 @login_required

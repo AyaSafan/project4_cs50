@@ -59,38 +59,59 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelector('#new_msg').onsubmit = () => {
         var message = document.querySelector('#txtarea').value;
         var reciever_username = document.querySelector('#last_msg_username').innerHTML;
-
+        
         var private_socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + '/private');
 
         private_socket.emit('emit_msg', {'reciever_username': reciever_username , 'msg': message}); 
 
-        private_socket.on('announce_msg_me', data => {
-            const msg = data.msg;
-            const date = data.date;
-            const msg_id = data.msg_id; 
-        // last message of the sender in the my friends tab
-        document.getElementById(reciever_username).innerHTML = msg;
+            //****************************reset unseen counter****************************************************** */           
+            // unseen count
+            let counter =  0;
+            //remove unseen counter
+            document.getElementById(reciever_username).style.fontWeight = "normal";
+            document.getElementById(reciever_username+'counter').innerHTML = `${counter}`;
+            document.getElementById(reciever_username+'counter').style.display = "none";
 
-        document.querySelector('#feed').innerHTML += ` <div id=${msg_id} class="container-fluid message me "> 
-            <button data-id=${msg_id} class="hide">x</button>      
-              <p>${msg}</p>
-                          <span class="time-right">${date}</span>
-                        </div>` ;
-        });
+           
+            /****************************************************************************************************** */
 
+
+       
         document.querySelector('#txtarea').value = '';
         document.querySelector('#submit').disabled = true;
         // Stop form from submitting
         return false;
     };
+    var private_socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + '/private');
+
+    private_socket.on('failed_msg', data => {
+        alert(data.alert);
+        location.reload();     
+    });
+
+    private_socket.on('announce_msg_me', data => {
+
+        const msg = data.msg;
+        const date = data.date;
+        const msg_id = data.msg_id;
+        const reciever = data.reciever;
+    // last message of the sender in the my friends tab
+    document.getElementById(reciever).innerHTML = msg;
+
+    document.querySelector('#feed').innerHTML += ` <div id=${msg_id} class="container-fluid message me "> 
+        <button data-id=${msg_id} class="hide">x</button>      
+          <p>${msg}</p>
+                      <span class="time-right">${date}</span>
+                    </div>` ;
+    });
 
     //announce new message
-    var private_socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + '/private');
     private_socket.on('announce_msg', data => {
+
         const msg = data.msg;
         const sender = data.sender
         const date = data.date;
-        const msg_id = data.msg_id;  
+        const msg_id = data.msg_id;
         // last message of the sender in the my friends tab
         document.getElementById(sender).innerHTML = msg;  
     
@@ -100,28 +121,19 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div id=${msg_id} class="container-fluid message other ">         
                           <p>${msg}</p>
                           <span class="time-left">${date}</span>
-                        </div>`;                  
-        }
-        else{
+                        </div>`; 
+            //****************************reset unseen counter****************************************************** */           
             // unseen count
-            let counter =  parseInt(document.getElementById(sender+'counter').innerHTML);
-            //increase unseen counter
-            document.getElementById(sender).style.fontWeight = "bolder";
-            counter ++;
+            let counter =  0;
+            //remove unseen counter
+            document.getElementById(sender).style.fontWeight = "normal";
             document.getElementById(sender+'counter').innerHTML = `${counter}`;
-            document.getElementById(sender+'counter').style.display = "block";
-
-            //notification new unseen message
-           
-            if(localStorage.getItem('mute') == "false"){
-                document.getElementById('audio').play();
-                document.getElementById('audio').muted = false;
-            }
+            document.getElementById(sender+'counter').style.display = "none";
 
             //request to update unseen in server
             // Initialize new request
             const request = new XMLHttpRequest();                
-            request.open('POST', '/unseen_counter');
+            request.open('POST', '/reset_unseen_counter');
              // Callback function for when request completes
              request.onload = () => {
                 // Extract JSON data from request
@@ -134,16 +146,29 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 }   
                             
-            // Add data to send with request
+             // Add data to send with request
             const data = new FormData();
-            const unseen_username = sender;  
-            data.append('unseen_username', unseen_username);
-            data.append('unseen', counter);
+            data.append('friend_username', sender);
             // Send request
             request.send(data);
+            /****************************************************************************************************** */
         }
+        else{
+            // unseen count
+            let counter =  data.counter;
+            //increase unseen counter
+            document.getElementById(sender).style.fontWeight = "bolder";
+            document.getElementById(sender+'counter').innerHTML = `${counter}`;
+            document.getElementById(sender+'counter').style.display = "block";
 
-            
+            //notification new unseen message
+           
+            if(localStorage.getItem('mute') == "false"){
+                document.getElementById('audio').play();
+                document.getElementById('audio').muted = false;
+            }
+
+        }              
         
     }); 
 
@@ -157,7 +182,7 @@ document.addEventListener('DOMContentLoaded', () => {
     private_socket.emit('emit_delete_msg', {'msg_id': msg_id} ); 
     }
     });
-    // When a message is deleted, delete to the all users on channel
+    // When a message is deleted, delete to the all users
     private_socket.on('announce_delete', data => {
         const msg_id = data.msg_id;
         document.querySelectorAll('.container-fluid.message ').forEach(function(msg) {
